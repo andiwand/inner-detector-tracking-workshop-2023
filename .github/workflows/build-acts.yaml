@@ -3,7 +3,7 @@ name: Build
 on: workflow_dispatch
 
 jobs:
-  build:
+  build-acts-examples-tutorial:
     runs-on: ubuntu-latest
     continue-on-error: true
     permissions:
@@ -35,5 +35,5 @@ jobs:
       - uses: docker/build-push-action@v3
         with:
           push: true
-          context: ${{ env.image_name }}
+          context: acts-examples-tutorial
           tags: ${{ steps.prep.outputs.tags }}
