@@ -35,5 +35,5 @@ jobs:
       - uses: docker/build-push-action@v3
         with:
           push: true
-          context: acts-examples-tutorial
+          context: acts-examples-tutorial/docker
           tags: ${{ steps.prep.outputs.tags }}
