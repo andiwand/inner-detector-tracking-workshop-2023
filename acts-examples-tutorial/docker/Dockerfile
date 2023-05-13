@@ -1,6 +1,6 @@
 FROM ghcr.io/acts-project/ubuntu2204:v41
 
-COPY .profile /root/.profile
+COPY profile /root/.profile
 
 RUN apt-get update && apt-get install -y git-lfs
 

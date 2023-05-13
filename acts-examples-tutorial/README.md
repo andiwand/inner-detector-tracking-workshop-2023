@@ -13,6 +13,8 @@ One way of avoiding the dependency problem is going to standard environment and 
 Acts 25.0.1 can be built against lcg103 on lxplus.
 
 ```
+source /cvmfs/sft.cern.ch/lcg/views/LCG_103/x86_64-centos7-gcc11-opt/setup.sh
+
 git clone https://github.com/acts-project/acts.git acts-src
 
 cd acts-src
@@ -26,6 +28,8 @@ cmake -B acts-build -S acts-src \
   -DCMAKE_CXX_STANDARD=17 \
   -DCMAKE_INSTALL_PREFIX="acts-install" \
   -DACTS_BUILD_ODD=ON \
+  -DACTS_BUILD_FATRAS=ON \
+  -DACTS_BUILD_FATRAS_GEANT4=ON \
   -DACTS_BUILD_EXAMPLES_DD4HEP=ON \
   -DACTS_BUILD_EXAMPLES_GEANT4=ON \
   -DACTS_BUILD_EXAMPLES_PYTHIA8=ON \
@@ -77,3 +81,20 @@ Examples/Scripts/Python/full_chain_odd.py
 ```
 
 (path is relative to the cloned acts source directory)
+
+## Problems that might be encountered
+
+ - git lfs is not correctly set-up and ODD will not have material files
+   - `git lfs install`
+   - `git lfs pull`
+   - `git lfs checkout`
+ - Acts is not correctly sourced
+   - `source bin/this_acts.sh`
+   - `source python/setup.sh`
+ - Other packages are not correctly sourced
+   - see [here](docker/profile)
+ - `detector_types.xml` missing
+   - `cd thirdparty/OpenDataDetector/xml`
+   - `wget https://raw.githubusercontent.com/AIDASoft/DD4hep/master/DDDetectors/compact/detector_types.xml`
+   - edit `OpenDataDetector.xml`
+   - (opened a PR to fix this [here](https://gitlab.cern.ch/acts/OpenDataDetector/-/merge_requests/65))
