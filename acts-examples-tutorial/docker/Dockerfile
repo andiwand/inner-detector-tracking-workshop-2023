@@ -1,6 +1,6 @@
 FROM ghcr.io/acts-project/ubuntu2204:v41
 
-RUN apt-get update && apt-get install -y git-lfs
+RUN apt-get update && apt-get install -y git-lfs wget vim
 
 RUN useradd -ms /bin/bash acts
 USER acts
@@ -21,5 +21,3 @@ RUN mkdir acts-src \
      -DACTS_FORCE_ASSERTIONS=ON \
      -DACTS_ENABLE_LOG_FAILURE_THRESHOLD=ON \
   && cmake --build acts-build --target install
-
-RUN apt-get update && apt-get install -y wget vim
