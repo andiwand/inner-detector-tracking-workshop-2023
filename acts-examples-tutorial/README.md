@@ -147,18 +147,6 @@ Now we need to add a Python binding to be able to add our new algorithm to recon
 
 We are ready to recompile Acts. Do this by executing `cmake --build acts-build --target install`.
 
-Remove the commented section around our `TutorialAlgorithm` in `idtw2023/acts-examples-tutorial/tutorial_full_chain_odd.py`. It should look like this.
-
-```
-# tutorial algorithm
-s.addAlgorithm(
-    acts.examples.TutorialAlgorithm(
-        level=acts.logging.VERBOSE,
-        message="hello world from python!",
-    )
-)
-```
-
 Now run the tutorial full chain again and check if the output changed.
 
 ```
