@@ -2,6 +2,11 @@ FROM ghcr.io/acts-project/ubuntu2204:v41
 
 RUN apt-get update && apt-get install -y git-lfs
 
+RUN useradd -ms /bin/bash acts
+USER acts
+COPY profile /home/acts/.profile
+WORKDIR /home/acts
+
 RUN mkdir acts-src \
   && git clone https://github.com/acts-project/acts.git acts-src \
   && cd acts-src && git checkout v25.0.1 && git submodule update --init && cd .. \
@@ -18,5 +23,3 @@ RUN mkdir acts-src \
   && cmake --build acts-build --target install
 
 RUN apt-get update && apt-get install -y wget vim
-
-COPY profile /root/.profile
