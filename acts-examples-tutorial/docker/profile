@@ -15,6 +15,6 @@ source /usr/local/bin/thisroot.sh
 source /usr/local/bin/geant4.sh
 source /usr/local/bin/thisdd4hep.sh
 
-source /acts-install/bin/this_acts.sh
-source /acts-install/bin/this_odd.sh
-source /acts-install/python/setup.sh
+source /home/acts/acts-install/bin/this_acts.sh
+source /home/acts/acts-install/bin/this_odd.sh
+source /home/acts/acts-install/python/setup.sh
