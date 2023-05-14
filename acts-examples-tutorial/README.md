@@ -1,6 +1,6 @@
 # Acts Examples Framework Tutorial
 
-The goal of this tutorial is to build Acts and the examples framework in order to run [`tutorial_full_chain_odd.py`](tutorial_full_chain_odd.py) and to plug a dummy algorithm into the reconstruction chain.
+The goal of this tutorial is to build Acts and the examples framework in order to run a reconstruction chain and to plug a user specific algorithm in.
 
 ## Dependencies
 
@@ -72,7 +72,7 @@ git checkout v25.0.1
 git submodule update --init
 cd ..
 
-docker run -ti -v acts-src:/acts-src ghcr.io/andiwand/acts-examples:edge
+docker run -ti -v acts-src:/home/actsacts-src ghcr.io/andiwand/acts-examples:edge
 ```
 
 ### local+cvmfs+lcg
