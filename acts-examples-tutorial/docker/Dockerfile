@@ -17,4 +17,4 @@ RUN mkdir acts-src \
      -DACTS_BUILD_EXAMPLES_PYTHON_BINDINGS=ON \
      -DACTS_FORCE_ASSERTIONS=ON \
      -DACTS_ENABLE_LOG_FAILURE_THRESHOLD=ON \
-  && cmake --build acts-build -- install
+  && cmake --build acts-build --target install

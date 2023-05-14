@@ -1,16 +1,26 @@
 # Acts Examples Framework Tutorial
 
+The goal of this tutorial is to build Acts and the examples framework in order to run [`tutorial_full_chain_odd.py`](tutorial_full_chain_odd.py) and to plug a dummy algorithm into the reconstruction chain.
+
 ## Dependencies
 
 Biggest problem is getting the dependencies of the Acts examples framework.
 
-## Setup variants
+You will need at least
+
+- Boost
+- Eigen
+- Root
+- Geant4
+- DD4hep
+
+## Setup
 
 ### lxplus+cvmfs+lcg
 
 One way of avoiding the dependency problem is going to standard environment and use pre-compiled versions.
 
-Acts 25.0.1 can be built against lcg103 on lxplus.
+Acts 25.0.1 can be built against lcg 103 on lxplus.
 
 ```
 source /cvmfs/sft.cern.ch/lcg/views/LCG_103/x86_64-centos7-gcc11-opt/setup.sh
@@ -37,7 +47,7 @@ cmake -B acts-build -S acts-src \
   -DACTS_FORCE_ASSERTIONS=ON \
   -DACTS_ENABLE_LOG_FAILURE_THRESHOLD=ON
 
-cmake --build acts-build -- install
+cmake --build acts-build --target install
 ```
 
 ### Docker
@@ -50,6 +60,19 @@ You can find the Dockerfile [here](docker/Dockerfile).
 docker pull ghcr.io/andiwand/acts-examples:edge
 
 docker run -ti ghcr.io/andiwand/acts-examples:edge
+```
+
+Or if you want to mount the source folder from outside the docker container
+
+```
+git clone https://github.com/acts-project/acts.git acts-src
+
+cd acts-src
+git checkout v25.0.1
+git submodule update --init
+cd ..
+
+docker run -ti -v acts-src:/acts-src ghcr.io/andiwand/acts-examples:edge
 ```
 
 ### local+cvmfs+lcg
@@ -74,27 +97,80 @@ You can find a build script [here](local/build_script.sh) (by Paul) and step by 
 
 ## Testing your environment
 
-Afterward the setup you should be able to run the full chain example.
+Afterward the setup you should be able to run the tutorial full chain example.
 
 ```
 Examples/Scripts/Python/full_chain_odd.py
 ```
 
-(path is relative to the cloned acts source directory)
-
 ## Problems that might be encountered
 
- - git lfs is not correctly set-up and ODD will not have material files
-   - `git lfs install`
-   - `git lfs pull`
-   - `git lfs checkout`
- - Acts is not correctly sourced
-   - `source bin/this_acts.sh`
-   - `source python/setup.sh`
- - Other packages are not correctly sourced
-   - see [here](docker/profile)
- - `detector_types.xml` missing
-   - `cd thirdparty/OpenDataDetector/xml`
-   - `wget https://raw.githubusercontent.com/AIDASoft/DD4hep/master/DDDetectors/compact/detector_types.xml`
-   - edit `OpenDataDetector.xml`
-   - (opened a PR to fix this [here](https://gitlab.cern.ch/acts/OpenDataDetector/-/merge_requests/65))
+- git lfs is not correctly set-up and ODD will not have material files
+  - `git lfs install`
+  - `git lfs pull`
+  - `git lfs checkout`
+- Acts is not correctly sourced
+  - `source bin/this_acts.sh`
+  - `source python/setup.sh`
+- Other packages are not correctly sourced
+  - see [here](docker/profile)
+- `detector_types.xml` missing
+  - `cd thirdparty/OpenDataDetector/xml`
+  - `wget https://raw.githubusercontent.com/AIDASoft/DD4hep/master/DDDetectors/compact/detector_types.xml`
+  - edit `OpenDataDetector.xml`
+  - (opened a PR to fix this [here](https://gitlab.cern.ch/acts/OpenDataDetector/-/merge_requests/65))
+
+## Adding a user specific algorithm
+
+The best way of adding a user specific algorithm to Acts is to do it directly in the examples source tree.
+
+We are going to add a `TutorialAlgorithm` to the chain which logs a message to the terminal on execution.
+
+The first step is to copy the following files into the given location
+
+- [`TutorialAlgorithm.hpp`](https://github.com/andiwand/acts/blob/tutorial-algorithm-for-idtw2023/Examples/Algorithms/TrackFinding/include/ActsExamples/TrackFinding/TutorialAlgorithm.hpp) -> `Examples/Algorithms/TrackFinding/include/ActsExamples/TrackFinding/TutorialAlogrithm.hpp`
+- [`TutorialAlgorithm.cpp`](https://github.com/andiwand/acts/blob/tutorial-algorithm-for-idtw2023/Examples/Algorithms/TrackFinding/src/TutorialAlgorithm.cpp) -> `Examples/Algorithms/TrackFinding/src/TutorialAlogrithm.cpp`
+- [`tutorial_full_chain_odd.py`](https://github.com/andiwand/acts/blob/tutorial-algorithm-for-idtw2023/Examples/Scripts/Python/tutorial_full_chain_odd.py) -> `Examples/Scripts/Python/tutorial_full_chain_odd.py`
+
+Afterwards we have to inform CMake that there is a new source file which sould be included in the build. To do that edit `Examples/Algorithms/TrackFinding/CMakeLists.txt` and append `src/TutorialAlogrithm.cpp` to the `add_library` function as an argument.
+
+Now we need to add a Python binding to be able to add our new algorithm to reconstruction chain. This can be done by editing `Examples/Python/src/TrackFinding.cpp`. First we need to add an include for our algorithm. Then go to the end of the file, copy-paste one of the other algorithm bindings (like the one for `AmbiguityResolutionAlgorithm`) and edit it accordingly. Afterwards it should look like this:
+
+```
+#include "ActsExamples/TrackFinding/TutorialAlgorithm.hpp"
+
+...
+
+  ACTS_PYTHON_DECLARE_ALGORITHM(ActsExamples::TutorialAlgorithm, mex,
+                                "TutorialAlgorithm", message);
+```
+
+We are ready to recompile Acts. Do this by executing `cmake --build acts-build --target install`.
+
+Remove the commented section around our `TutorialAlgorithm` in `idtw2023/acts-examples-tutorial/tutorial_full_chain_odd.py`. It should look like this.
+
+```
+# tutorial algorithm
+s.addAlgorithm(
+    acts.examples.TutorialAlgorithm(
+        level=acts.logging.VERBOSE,
+        message="hello world from python!",
+    )
+)
+```
+
+Now run the tutorial full chain again and check if the output changed.
+
+```
+idtw2023/acts-examples-tutorial/tutorial_full_chain_odd.py
+```
+
+A summary of the changes we made can be seen here https://github.com/acts-project/acts/pull/2128.
+
+If you want to check them out locally you can do
+
+```
+git remote add tutorial https://github.com/andiwand/acts.git
+git fetch --all
+git checkout tutorial/tutorial-algorithm-for-idtw2023
+```
