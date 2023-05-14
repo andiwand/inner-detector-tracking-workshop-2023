@@ -128,11 +128,17 @@ We are going to add a `TutorialAlgorithm` to the chain which logs a message to t
 
 The first step is to copy the following files into the given location
 
-- [`TutorialAlgorithm.hpp`](https://github.com/andiwand/acts/blob/tutorial-algorithm-for-idtw2023/Examples/Algorithms/TrackFinding/include/ActsExamples/TrackFinding/TutorialAlgorithm.hpp) -> `Examples/Algorithms/TrackFinding/include/ActsExamples/TrackFinding/TutorialAlogrithm.hpp`
-- [`TutorialAlgorithm.cpp`](https://github.com/andiwand/acts/blob/tutorial-algorithm-for-idtw2023/Examples/Algorithms/TrackFinding/src/TutorialAlgorithm.cpp) -> `Examples/Algorithms/TrackFinding/src/TutorialAlogrithm.cpp`
+- [`TutorialAlgorithm.hpp`](https://github.com/andiwand/acts/blob/tutorial-algorithm-for-idtw2023/Examples/Algorithms/TrackFinding/include/ActsExamples/TrackFinding/TutorialAlgorithm.hpp) -> `Examples/Algorithms/TrackFinding/include/ActsExamples/TrackFinding/TutorialAlgorithm.hpp`
+- [`TutorialAlgorithm.cpp`](https://github.com/andiwand/acts/blob/tutorial-algorithm-for-idtw2023/Examples/Algorithms/TrackFinding/src/TutorialAlgorithm.cpp) -> `Examples/Algorithms/TrackFinding/src/TutorialAlgorithm.cpp`
 - [`tutorial_full_chain_odd.py`](https://github.com/andiwand/acts/blob/tutorial-algorithm-for-idtw2023/Examples/Scripts/Python/tutorial_full_chain_odd.py) -> `Examples/Scripts/Python/tutorial_full_chain_odd.py`
 
-Afterwards we have to inform CMake that there is a new source file which sould be included in the build. To do that edit `Examples/Algorithms/TrackFinding/CMakeLists.txt` and append `src/TutorialAlogrithm.cpp` to the `add_library` function as an argument.
+```
+wget https://raw.githubusercontent.com/andiwand/acts/tutorial-algorithm-for-idtw2023/Examples/Algorithms/TrackFinding/include/ActsExamples/TrackFinding/TutorialAlgorithm.hpp -P Examples/Algorithms/TrackFinding/include/ActsExamples/TrackFinding
+wget https://raw.githubusercontent.com/andiwand/acts/tutorial-algorithm-for-idtw2023/Examples/Algorithms/TrackFinding/src/TutorialAlgorithm.cpp -P Examples/Algorithms/TrackFinding/src
+wget https://raw.githubusercontent.com/andiwand/acts/tutorial-algorithm-for-idtw2023/Examples/Scripts/Python/tutorial_full_chain_odd.py -P Examples/Scripts/Python
+```
+
+Afterwards we have to inform CMake that there is a new source file which sould be included in the build. To do that edit `Examples/Algorithms/TrackFinding/CMakeLists.txt` and append `src/TutorialAlgorithm.cpp` to the `add_library` function as an argument.
 
 Now we need to add a Python binding to be able to add our new algorithm to reconstruction chain. This can be done by editing `Examples/Python/src/TrackFinding.cpp`. First we need to add an include for our algorithm. Then go to the end of the file, copy-paste one of the other algorithm bindings (like the one for `AmbiguityResolutionAlgorithm`) and edit it accordingly. Afterwards it should look like this:
 
@@ -150,7 +156,7 @@ We are ready to recompile Acts. Do this by executing `cmake --build acts-build -
 Now run the tutorial full chain again and check if the output changed.
 
 ```
-idtw2023/acts-examples-tutorial/tutorial_full_chain_odd.py
+python3 Examples/Scripts/Python/tutorial_full_chain_odd.py
 ```
 
 A summary of the changes we made can be seen here https://github.com/acts-project/acts/pull/2128.

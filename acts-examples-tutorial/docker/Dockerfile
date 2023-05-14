@@ -2,7 +2,7 @@ FROM ghcr.io/acts-project/ubuntu2204:v41
 
 COPY profile /root/.profile
 
-RUN apt-get update && apt-get install -y git-lfs
+RUN apt-get update && apt-get install -y git-lfs wget vim
 
 RUN mkdir acts-src \
   && git clone https://github.com/acts-project/acts.git acts-src \
