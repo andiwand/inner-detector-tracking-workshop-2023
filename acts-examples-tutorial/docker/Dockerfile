@@ -1,8 +1,6 @@
 FROM ghcr.io/acts-project/ubuntu2204:v41
 
-COPY profile /root/.profile
-
-RUN apt-get update && apt-get install -y git-lfs wget vim
+RUN apt-get update && apt-get install -y git-lfs
 
 RUN mkdir acts-src \
   && git clone https://github.com/acts-project/acts.git acts-src \
@@ -18,3 +16,7 @@ RUN mkdir acts-src \
      -DACTS_FORCE_ASSERTIONS=ON \
      -DACTS_ENABLE_LOG_FAILURE_THRESHOLD=ON \
   && cmake --build acts-build --target install
+
+RUN apt-get update && apt-get install -y wget vim
+
+COPY profile /root/.profile
