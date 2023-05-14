@@ -1,6 +1,6 @@
 FROM ghcr.io/acts-project/ubuntu2204:v41
 
-RUN apt-get update && apt-get install -y git-lfs wget vim
+RUN apt-get update && apt-get install -y git-lfs wget vim gdb
 
 RUN useradd -ms /bin/bash acts
 USER acts
