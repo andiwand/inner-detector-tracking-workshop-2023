@@ -106,6 +106,7 @@ Examples/Scripts/Python/full_chain_odd.py
 ## Problems that might be encountered
 
 - git lfs is not correctly set-up and ODD will not have material files
+  - `cd acts-src/thirdparty/OpenDataDetector`
   - `git lfs install`
   - `git lfs pull`
   - `git lfs checkout`
