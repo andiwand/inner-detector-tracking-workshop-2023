@@ -126,7 +126,7 @@ The best way of adding a user specific algorithm to Acts is to do it directly in
 
 We are going to add a `TutorialAlgorithm` to the chain which logs a message to the terminal on execution.
 
-The first step is to copy the following files into the given location
+The first step is to copy the following files into the given locations
 
 - [`TutorialAlgorithm.hpp`](https://github.com/andiwand/acts/blob/tutorial-algorithm-for-idtw2023/Examples/Algorithms/TrackFinding/include/ActsExamples/TrackFinding/TutorialAlgorithm.hpp) -> `Examples/Algorithms/TrackFinding/include/ActsExamples/TrackFinding/TutorialAlgorithm.hpp`
 - [`TutorialAlgorithm.cpp`](https://github.com/andiwand/acts/blob/tutorial-algorithm-for-idtw2023/Examples/Algorithms/TrackFinding/src/TutorialAlgorithm.cpp) -> `Examples/Algorithms/TrackFinding/src/TutorialAlgorithm.cpp`
@@ -138,7 +138,7 @@ wget https://raw.githubusercontent.com/andiwand/acts/tutorial-algorithm-for-idtw
 wget https://raw.githubusercontent.com/andiwand/acts/tutorial-algorithm-for-idtw2023/Examples/Scripts/Python/tutorial_full_chain_odd.py -P Examples/Scripts/Python
 ```
 
-Afterwards we have to inform CMake that there is a new source file which sould be included in the build. To do that edit `Examples/Algorithms/TrackFinding/CMakeLists.txt` and append `src/TutorialAlgorithm.cpp` to the `add_library` function as an argument.
+Afterwards we have to inform CMake that there is a new source file which should be included in the build. To do that edit `Examples/Algorithms/TrackFinding/CMakeLists.txt` and append `src/TutorialAlgorithm.cpp` to the `add_library` function as an argument.
 
 Now we need to add a Python binding to be able to add our new algorithm to reconstruction chain. This can be done by editing `Examples/Python/src/TrackFinding.cpp`. First we need to add an include for our algorithm. Then go to the end of the file, copy-paste one of the other algorithm bindings (like the one for `AmbiguityResolutionAlgorithm`) and edit it accordingly. Afterwards it should look like this:
 
