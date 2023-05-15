@@ -72,7 +72,7 @@ git checkout v25.0.1
 git submodule update --init
 cd ..
 
-docker run -ti -v acts-src:/home/actsacts-src ghcr.io/andiwand/acts-examples:edge
+docker run -ti -v acts-src:/home/acts/acts-src ghcr.io/andiwand/acts-examples:edge
 ```
 
 ### local+cvmfs+lcg
